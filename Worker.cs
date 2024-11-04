@@ -1,12 +1,16 @@
+using Producer.Interfaces;
+
 namespace Producer;
 
 public class Worker : BackgroundService
 {
     private readonly ILogger<Worker> _logger;
+    private readonly IMessageProducer _producer;
 
-    public Worker(ILogger<Worker> logger)
+    public Worker(ILogger<Worker> logger, IMessageProducer producer)
     {
         _logger = logger;
+        _producer = producer;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -18,7 +22,9 @@ public class Worker : BackgroundService
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
             }
 
-            await Task.Delay(1000, stoppingToken);
+            _producer.SendAsync<string>("hello");
+
+            await Task.Delay(10000, stoppingToken);
         }
     }
 }
