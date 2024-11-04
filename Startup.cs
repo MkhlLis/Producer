@@ -29,7 +29,6 @@ public static class Startup
         services.ConfigureKafka(configuration);
         services.AddSingleton<IMessageProducer, MessageProducer>();
         
-        /*services.AddScoped<IAdministrationCommandHandler, AdministrationCommandHandler>();*/
         return services;
     }
 
