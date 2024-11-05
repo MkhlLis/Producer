@@ -5,7 +5,7 @@
 
 
 Интерфейсы связаны с реализациями посредством DI (Startup.cs).
-```
+```C#
 services.AddHostedService<Worker>();
 services.ConfigureKafka(configuration);
 services.AddSingleton<IMessageProducer, MessageProducer>();
