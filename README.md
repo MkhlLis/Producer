@@ -14,7 +14,7 @@ services.AddSingleton<IMessageProducer, MessageProducer>();
 **1. Сервис реализует MVP отправки сообщений в  Kafka**
 Особенности:
 1. Использован Confluent.Kafka.DependencyInjection, конфгурация продюсера реализована через appsettings.json:
-```
+```JSON
 "Kafka": {
     "BootstrapServers": "localhost:9092"
   }
@@ -24,7 +24,7 @@ services.Configure<ProducerConfig>(configuration.GetSection("Kafka"));
 services.AddKafkaClient();
 ```
 2. HostedService Worker каждые 10 секунд передает сообщения на отправку
-```
+```C#
 protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
@@ -46,7 +46,7 @@ protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     }
 ```
 3. MessageProducer десериализирует (Avro) и отправляет сообщение (реализующее интерфейс ISpecificRecord)
-```
+```C#
     public async Task SendAsync<T>(T message) where T : ISpecificRecord
     {
         try
